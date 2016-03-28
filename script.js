@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 {
   const img = document.getElementById('img');
@@ -6,27 +6,28 @@
   const draw = document.getElementById('draw');
   const fileInput = document.getElementById('file');
 
-  const getColors = () => {
-    RGBaster.colors(img, {
-      paletteSize: 20,
-      success: function(colors) {
-        colorList.innerHTML = '';
-        colors.palette.forEach((color) => {
-          const li = document.createElement('li');
-          li.style.backgroundColor = color;
-          colorList.appendChild(li);
-        });
+  const dumpColors = (colors) => {
+    colorList.innerHTML = '';
+    colors.forEach((color) => {
+      const li = document.createElement('li');
 
-        draw.style.backgroundColor = colors.palette[0]
-      }
+      li.style.backgroundColor = color;
+      colorList.appendChild(li);
     });
+    draw.style.backgroundColor = colors[0];
+  };
+
+  const getColors = () => {
+    const dominant = new window.DominantColor(img, dumpColors);
   };
 
   const setImage = (event) => {
     const file = event.target.files[0];
+
     if (!file) {
       return;
     }
+
     img.src = window.URL.createObjectURL(file);
     getColors();
   };
